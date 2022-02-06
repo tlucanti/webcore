@@ -6,25 +6,29 @@
 /*   By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:34:11 by tlucanti          #+#    #+#             */
-/*   Updated: 2022/02/04 13:39:26 by tlucanti         ###   ########.fr       */
+/*   Updated: 2022/02/06 17:43:50 by tlucanti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server.hpp"
+#include "../inc/Server.hpp"
 
 tlucanti::Server::Server(const std::string &address, uint16_t port)
 		: _polls_unprocessed(0), _last_processed_poll(-1), sock(address, port, true) {}
 
 tlucanti::Server::~Server() noexcept
 {
+	sock.close();
 	for (container::iterator it = poll_data.begin(); it != poll_data.end(); ++it)
+	{
+		std::cout << "closing socket " << std::to_string(it->fd) << std::endl;
 		close(it->fd);
+	}
 }
 
 __WUR tlucanti::Socket
 tlucanti::Server::accept()
 {
-	return tlucanti::accept(sock, true);
+	return sock.accept();
 }
 
 __WUR tlucanti::Socket
