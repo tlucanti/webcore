@@ -6,11 +6,11 @@
 /*   By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:48:49 by tlucanti          #+#    #+#             */
-/*   Updated: 2022/02/03 16:03:24 by tlucanti         ###   ########.fr       */
+/*   Updated: 2022/02/06 17:43:53 by tlucanti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Socket.hpp"
+#include "../inc/Socket.hpp"
 
 tlucanti::Socket tlucanti::Socket::nil = tlucanti::Socket(-1, false);
 
@@ -23,6 +23,8 @@ tlucanti::Socket::Socket(const std::string &address, uint16_t port, bool nonbloc
 		throw SocketException("cannot create socket", errno);
 	if (nonblock)
 		fcntl(_sock, F_SETFL, O_NONBLOCK);
+	int yes = 1;
+	setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 	if (inet_pton(AF_INET, address.c_str(), &_addr.sin_addr) <= 0)
 		throw SocketException("invalid socket address", errno);
 	_addr.sin_port = htons(port);
@@ -30,6 +32,52 @@ tlucanti::Socket::Socket(const std::string &address, uint16_t port, bool nonbloc
 		throw SocketException("cannot bind address", errno);
 	if (listen(_sock, 20))
 		throw SocketException("cannot listen port", errno);
+}
+
+__WUR tlucanti::Socket
+tlucanti::Socket::accept(bool nonblock) const
+{
+	int int_sock = ::accept(_sock, nullptr, nullptr);
+	if (int_sock < 0)
+	{
+		if (errno == EWOULDBLOCK)
+			return Socket::nil;
+		else
+			throw SocketException("cannot accept socket", errno);
+	}
+	return Socket(int_sock, nonblock);
+}
+
+__WUR std::string
+tlucanti::Socket::recv()const
+{
+	std::string message;
+	char buff[Socket::READ_SIZE + 1];
+
+	ssize_t rbytes;
+
+	while (true)
+	{
+		rbytes = ::recv(_sock, buff, Socket::READ_SIZE, 0);
+		buff[rbytes] = 0;
+		if (rbytes == Socket::READ_SIZE)
+			message += buff;
+		else if (rbytes < 0)
+			throw SocketException("recv error", errno);
+		else
+		{
+			message += buff;
+			return message;
+		}
+	}
+}
+
+void
+tlucanti::Socket::send(const std::string &message) const
+{
+	std::cout << "sending to fd " << _sock << " message <" << message << ">\n";
+	std::string ret = ':' + tlucanti::server_name + message + '\n';
+	::send(_sock, ret.c_str(), ret.size(), 0);
 }
 
 #include <iostream>
