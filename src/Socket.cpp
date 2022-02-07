@@ -75,9 +75,30 @@ tlucanti::Socket::recv()const
 void
 tlucanti::Socket::send(const std::string &message) const
 {
-	std::cout << "sending to fd " << _sock << " message <" << message << ">\n";
-	std::string ret = ':' + tlucanti::server_name + message + '\n';
-	::send(_sock, ret.c_str(), ret.size(), 0);
+	ssize_t done = 0;
+_SEND:
+	std::cout << "sending to fd " << _sock << " message <" << message.c_str() + done << "\n";
+	for (char c : message)
+	{
+		if (isprint(c))
+			std::cout << c;
+		else
+			std::cout << '(' << (int)c << ')';
+	}
+	std::cout << std::endl;
+	done = ::send(_sock, message.c_str() + done, message.size(), MSG_NOSIGNAL);
+	if (done < 0)
+	{
+		if (errno == EAGAIN)
+		{
+			std::cout << "again\n";
+			goto _SEND;
+		}
+		throw SocketException("send error", errno);
+	}
+	if (done < message.size())
+		goto _SEND;
+	std::cout << "sent " << done << " of " << message.size() << " bytes\n";
 }
 
 #include <iostream>
