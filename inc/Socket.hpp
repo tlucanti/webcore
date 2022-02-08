@@ -30,11 +30,6 @@
 
 namespace tlucanti
 {
-	extern std::string server_name;
-}
-
-namespace tlucanti
-{
 	class Socket
 	{
 	public:
