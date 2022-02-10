@@ -77,7 +77,7 @@ tlucanti::Socket::send(const std::string &message) const
 {
 	ssize_t done = 0;
 _SEND:
-	std::cout << "sending to fd " << _sock << " message <" << message.c_str() + done << "\n";
+	std::cout << "sending to fd " << _sock << " message\n<";
 	for (char c : message)
 	{
 		if (isprint(c))
@@ -85,7 +85,7 @@ _SEND:
 		else
 			std::cout << '(' << (int)c << ')';
 	}
-	std::cout << std::endl;
+	std::cout << ">\n";
 	done = ::send(_sock, message.c_str() + done, message.size(), MSG_NOSIGNAL);
 	if (done < 0)
 	{
@@ -98,7 +98,7 @@ _SEND:
 	}
 	if (done < message.size())
 		goto _SEND;
-	std::cout << "sent " << done << " of " << message.size() << " bytes\n";
+	std::cout << "\n";
 }
 
 #include <iostream>
