@@ -32,7 +32,26 @@ tlucanti::Socket::Socket(const std::string &address, uint16_t port, bool nonbloc
 		throw SocketException("cannot bind address", errno);
 	if (listen(_sock, 20))
 		throw SocketException("cannot listen port", errno);
+	_address = address;
+	_port = port;
 }
+
+tlucanti::Socket::Socket(int sock, bool nonblock) noexcept
+		: _sock(sock)
+{
+	char ip_str[INET_ADDRSTRLEN];
+	sockaddr_storage addr {};
+	socklen_t len = sizeof addr;
+	getpeername(_sock, reinterpret_cast<sockaddr *>(&addr), &len);
+	sockaddr_in *struct_in = reinterpret_cast<sockaddr_in *>(&addr);
+	_port = struct_in->sin_port;
+	inet_ntop(AF_INET, &struct_in->sin_addr, ip_str, sizeof ip_str);
+	_address.assign(ip_str);
+
+	if (nonblock)
+		fcntl(_sock, F_SETFL, O_NONBLOCK);
+}
+
 
 __WUR tlucanti::Socket
 tlucanti::Socket::accept(bool nonblock) const
@@ -101,23 +120,17 @@ _SEND:
 	std::cout << "\n";
 }
 
-#include <iostream>
 tlucanti::Socket::~Socket() noexcept
 {
 //	std::cout << "closed " << _sock << "\n";
 //	close(_sock);
 }
 
-tlucanti::Socket::Socket(int sock, bool nonblock) noexcept
-		: _sock(sock)
-{
-	if (nonblock)
-		fcntl(_sock, F_SETFL, O_NONBLOCK);
-}
-
 tlucanti::Socket &
 tlucanti::Socket::operator =(const Socket &cpy)
 {
 	_sock = cpy._sock;
+	_address = cpy._address;
+	_port = cpy._port;
 	return *this;
 }
