@@ -13,6 +13,8 @@
 #ifndef DEFS_H
 # define DEFS_H
 
+# define NOP ((void)0)
+
 # if __cplusplus <= 199711L
 #  define __WUR __attribute__((warn_unused_result))
 #  ifndef noexcept
