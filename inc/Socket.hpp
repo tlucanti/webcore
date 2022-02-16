@@ -10,23 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <cerrno>
-#include <cstring>
-#include <unistd.h>
-#include <fcntl.h>
-
-// delete
-#include <iostream>
-
-#include "defs.h"
-#include "SocketException.hpp"
-
 #ifndef SOCKET_HPP
 # define SOCKET_HPP
+
+# include <string>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
+# include <cerrno>
+# include <cstring>
+# include <unistd.h>
+# include <fcntl.h>
+
+# warning "delete iostream in Soket.hpp"
+#include <iostream>
+
+# include "defs.h"
+# include "SocketException.hpp"
+
 
 namespace tlucanti
 {
