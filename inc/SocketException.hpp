@@ -13,7 +13,7 @@
 #ifndef SOCKET_EXCEPTION_HPP
 # define SOCKET_EXCEPTION_HPP
 
-#include "IRCException.hpp"
+# include "IRCException.hpp"
 
 namespace tlucanti
 {
