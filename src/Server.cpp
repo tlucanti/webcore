@@ -72,15 +72,3 @@ tlucanti::Server::add_client(Socket &new_cli)
 	new_struct.revents = 0;
 	poll_data.push_back(new_struct);
 }
-
-//__WUR inline size_t
-//tlucanti::Server::size() const
-//{
-//	return _size;
-//}
-//
-//__WUR inline struct pollfd *
-//tlucanti::Server::get_poll_data() const
-//{
-//	return const_cast<struct pollfd *>(poll_data.data());
-//}
