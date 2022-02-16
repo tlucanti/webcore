@@ -17,9 +17,6 @@
 #include <vector>
 #include <sys/poll.h>
 
-// delete
-#include <iostream>
-
 #include "ServerException.hpp"
 #include "Socket.hpp"
 #include "defs.h"
@@ -53,7 +50,7 @@ namespace tlucanti
 		Server &operator =(const Server &) __DELETE
 	};
 
-	__NORET void server_start(Server &server);
+	void server_start(Server &server);
 }
 
 #endif /* SERVER_HPP */
