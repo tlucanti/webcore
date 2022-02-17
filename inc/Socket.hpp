@@ -52,6 +52,7 @@ namespace tlucanti
 
 		__WUR inline bool operator ==(const Socket &eq) const { return _sock == eq._sock; }
 		__WUR inline bool operator !=(const Socket &eq) const { return _sock != eq._sock; }
+		__WUR inline bool operator <(const Socket &cmp) const { return  _sock < cmp._sock; }
 
 		static Socket nil;
 	private:
