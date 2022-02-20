@@ -6,7 +6,7 @@
 /*   By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:48:49 by tlucanti          #+#    #+#             */
-/*   Updated: 2022/02/06 17:43:53 by tlucanti         ###   ########.fr       */
+/*   Updated: 2022/02/20 23:14:47 by tlucanti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ tlucanti::Socket::Socket(int sock, bool nonblock) noexcept
 		: _sock(sock)
 {
 	char ip_str[INET_ADDRSTRLEN];
-	sockaddr_storage addr {};
+	struct sockaddr_storage addr {};
 	socklen_t len = sizeof addr;
 	getpeername(_sock, reinterpret_cast<sockaddr *>(&addr), &len);
 	sockaddr_in *struct_in = reinterpret_cast<sockaddr_in *>(&addr);
