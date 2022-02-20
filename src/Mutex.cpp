@@ -11,14 +11,17 @@
 /* ************************************************************************** */
 
 #include "../inc/Mutex.hpp"
+#warning "delete iostream"
+#include <iostream>
 
-tlucanti::Mutex::Mutex()
-		: _mutex_v_(PTHREAD_MUTEX_INITIALIZER);
+tlucanti::Mutex::Mutex() noexcept
+		: _mutex_v_(PTHREAD_MUTEX_INITIALIZER)
 		{}
 
 void
 tlucanti::Mutex::lock()
 {
+//	std::cout << "locking mutex " << this << std::endl;
 	pthread_mutex_lock(&_mutex_v_);
 }
 
@@ -31,10 +34,11 @@ tlucanti::Mutex::try_lock()
 void
 tlucanti::Mutex::unlock()
 {
-	pthread_mutex_unlock(&_mutex_v_)
+//	std::cout << "unlock " << this << std::endl;
+	pthread_mutex_unlock(&_mutex_v_);
 }
 
-tlucanti::Mutex:~:Mutex()
+tlucanti::Mutex::~Mutex()
 {
 	unlock();
 	pthread_mutex_destroy(&_mutex_v_);
