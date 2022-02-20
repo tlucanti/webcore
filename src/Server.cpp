@@ -35,10 +35,10 @@ __WUR tlucanti::Socket
 tlucanti::Server::poll()
 {
 	if (_polls_unprocessed == 0)
-		/*
-			if all clients were processed - call ::poll again and return first client with event
-			else - continue from next client with event
-	 	*/
+	/*
+		if all clients were processed - call ::poll again and return first client with event
+		else - continue from next client with event
+ 	*/
 	{
 		_polls_unprocessed = ::poll(poll_data.data(), poll_data.size(), WAIT_TIME);
 		if (_polls_unprocessed < 0)
