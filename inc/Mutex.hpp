@@ -23,14 +23,16 @@ namespace tlucanti
 	{
 	public:
 		Mutex() noexcept;
+		~Mutex();
 		void lock();
 		bool try_lock();
 		void unlock();
 
 	private:
 		pthread_mutex_t		_mutex_v_;
+
 	__DELETED_MEMBERS:
-		Mutex(const Mutext &) __DELETE
+		Mutex(const Mutex &) __DELETE
 		Mutex &operator =(const Mutex &) __DELETE
 	};
 }
