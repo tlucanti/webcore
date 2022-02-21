@@ -77,7 +77,7 @@ tlucanti::Socket::recv()const
 
 	while (true)
 	{
-		rbytes = ::recv(_sock, buff, Socket::READ_SIZE, 0);
+		rbytes = ::read(_sock, buff, Socket::READ_SIZE);
 		buff[rbytes] = 0;
 		if (rbytes == Socket::READ_SIZE)
 			message += buff;
@@ -86,6 +86,15 @@ tlucanti::Socket::recv()const
 		else
 		{
 			message += buff;
+			std::cout << "data from " << _sock << " client (" << message.size() << ")\n<";
+			for (auto c : message)
+			{
+				if (isprint(c))
+					std::cout << c;
+				else
+					std::cout << '(' << (int)c << ')';
+			}
+			std::cout << ">\n";
 			return message;
 		}
 	}
