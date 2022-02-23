@@ -6,7 +6,7 @@
 /*   By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:48:49 by tlucanti          #+#    #+#             */
-/*   Updated: 2022/02/20 23:14:47 by tlucanti         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:20:31 by tlucanti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,20 @@ tlucanti::Socket::recv()const
 		else
 		{
 			message += buff;
-			std::cout << "data from " << _sock << " client (" << message.size() << ")\n<";
-			for (auto c : message)
+
+#ifdef __DEBUG
+			std::cout << "data from " << _sock << " client (" <<
+				message.size() << ")\n<";
+			for (int i=0; i < (int)message.size(); ++i)
 			{
-				if (isprint(c))
-					std::cout << c;
+				if (isprint(message.at(i)))
+					std::cout << message.at(i);
 				else
-					std::cout << '(' << (int)c << ')';
+					std::cout << '(' << (int)message.at(i) << ')';
 			}
 			std::cout << ">\n";
+#endif /* __DEBUG */
+
 			return message;
 		}
 	}
@@ -104,35 +109,41 @@ void
 tlucanti::Socket::send(const std::string &message) const
 {
 	ssize_t done = 0;
-_SEND:
+
+#ifdef __DEBUG
 	std::cout << "sending to fd " << _sock << " message\n<";
-	for (char c : message)
+	for (int i=0; i < (int)message.size(); ++i)
 	{
-		if (isprint(c))
-			std::cout << c;
+		if (isprint(message.at(i)))
+			std::cout << message.at(i);
 		else
-			std::cout << '(' << (int)c << ')';
+			std::cout << '(' << (int)message.at(i) << ')';
 	}
 	std::cout << ">\n";
+#endif /* __DEBUG */
+
+_SEND:
 	done = ::send(_sock, message.c_str() + done, message.size(), MSG_NOSIGNAL);
 	if (done < 0)
-	{
-		if (errno == EAGAIN)
-		{
-			std::cout << "again\n";
-			goto _SEND;
-		}
 		throw SocketException("send error", errno);
-	}
-	if (done < message.size())
+	if (done < static_cast<ssize_t>(message.size()))
 		goto _SEND;
+
+#ifdef __DEBUG
 	std::cout << "\n";
+#endif /* __DEBUG */
+
 }
 
-tlucanti::Socket::~Socket() noexcept
+void
+tlucanti::Socket::close()
 {
-//	std::cout << "closed " << _sock << "\n";
-//	close(_sock);
+#ifdef __DEBUG
+	std::cout << "closing socket " << _sock << std::endl;
+#endif /* __DEBUG */
+
+	::close(_sock);
+	_sock = -1;
 }
 
 tlucanti::Socket &

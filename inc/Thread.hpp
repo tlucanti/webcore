@@ -6,7 +6,7 @@
 /*   By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:56:47 by tlucanti          #+#    #+#             */
-/*   Updated: 2022/02/17 16:14:52 by tlucanti         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:19:10 by tlucanti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ namespace tlucanti
 	class Thread
 	{
 	public:
-//		template <typename arg_T>
-		Thread(void *(*func)(void *) , const void *arg)
+		Thread(void *(*func)(void *), const void *arg)
 			: pthread_id {}
 		{
 			int status = pthread_create(&pthread_id, nullptr, func, &arg);

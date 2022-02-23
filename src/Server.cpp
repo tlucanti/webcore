@@ -6,21 +6,28 @@
 /*   By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:34:11 by tlucanti          #+#    #+#             */
-/*   Updated: 2022/02/06 17:43:50 by tlucanti         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:23:24 by tlucanti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/Server.hpp"
 
-tlucanti::Server::Server(const std::string &address, uint16_t port)
-		: _polls_unprocessed(0), _last_processed_poll(-1), sock(address, port, true) {}
+tlucanti::Server::Server(const std::string &address, uint16_t port) :
+	sock(address, port, true)
+	, _polls_unprocessed(0)
+	, _last_processed_poll(-1)
+	{}
 
 tlucanti::Server::~Server() noexcept
 {
 	sock.close();
-	for (container::iterator it = poll_data.begin(); it != poll_data.end(); ++it)
+	container::iterator it = poll_data.begin();
+	for (; it != poll_data.end(); ++it)
 	{
-		std::cout << "closing socket " << std::to_string(it->fd) << std::endl;
+#ifdef __DEBUG
+		std::cout << "closing socket " << it->fd << std::endl;
+#endif /* __DEBUG */
+
 		close(it->fd);
 	}
 }
@@ -36,7 +43,8 @@ tlucanti::Server::poll()
 {
 	if (_polls_unprocessed == 0)
 	/*
-		if all clients were processed - call ::poll again and return first client with event
+		if all clients were processed - call ::poll again and return first
+		client with event
 		else - continue from next client with event
  	*/
 	{
@@ -49,11 +57,12 @@ tlucanti::Server::poll()
 			return Socket::nil;
 		}
 	}
-	for (int cli=_last_processed_poll + 1; cli < poll_data.size(); ++cli)
+	for (int cli=_last_processed_poll + 1; cli < (int)poll_data.size(); ++cli)
 	{
 		if (poll_data.at(cli).revents & POLLIN)
 		{
-			poll_data[cli].revents = 0; // don't need .at because already checked
+			poll_data[cli].revents = 0;	// don't need .at because already
+										//checked
 			--_polls_unprocessed;
 			return Socket(poll_data[cli].fd, true);
 		}

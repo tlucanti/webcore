@@ -6,20 +6,24 @@
 /*   By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 18:58:05 by tlucanti          #+#    #+#             */
-/*   Updated: 2022/02/06 17:43:29 by tlucanti         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:17:55 by tlucanti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-#include <string>
-#include <vector>
-#include <sys/poll.h>
+# include <string>
+# include <vector>
+# include <sys/poll.h>
 
-#include "ServerException.hpp"
-#include "Socket.hpp"
-#include "defs.h"
+# include "ServerException.hpp"
+# include "Socket.hpp"
+# include "defs.h"
+
+# ifdef __DEBUG
+#  include <iostream>
+# endif /* __DEBUG */
 
 namespace tlucanti
 {

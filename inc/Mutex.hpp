@@ -6,7 +6,7 @@
 /*   By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:42:31 by tlucanti          #+#    #+#             */
-/*   Updated: 2022/02/17 17:48:34 by tlucanti         ###   ########.fr       */
+/*   Updated: 2022/02/23 17:45:48 by tlucanti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ namespace tlucanti
 	{
 	public:
 		Mutex() noexcept;
-		~Mutex();
-		void lock();
-		bool try_lock();
-		void unlock();
+		~Mutex() noexcept;
+		void lock() noexcept;
+		bool try_lock() noexcept;
+		void unlock() noexcept;
 
 	private:
 		pthread_mutex_t		_mutex_v_;
