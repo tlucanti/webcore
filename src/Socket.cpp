@@ -52,7 +52,6 @@ tlucanti::Socket::Socket(int sock, bool nonblock) noexcept
 		fcntl(_sock, F_SETFL, O_NONBLOCK);
 }
 
-
 __WUR tlucanti::Socket
 tlucanti::Socket::accept(bool nonblock) const
 {
@@ -68,7 +67,7 @@ tlucanti::Socket::accept(bool nonblock) const
 }
 
 __WUR std::string
-tlucanti::Socket::recv()const
+tlucanti::Socket::recv() const
 {
 	std::string message;
 	char buff[Socket::READ_SIZE + 1];
@@ -77,11 +76,11 @@ tlucanti::Socket::recv()const
 
 	while (true)
 	{
-		rbytes = ::read(_sock, buff, Socket::READ_SIZE);
+		rbytes = ::recv(_sock, buff, Socket::READ_SIZE, 0);
 		buff[rbytes] = 0;
 		if (rbytes == Socket::READ_SIZE)
 			message += buff;
-		else if (rbytes < 0)
+		else if (rbytes <= 0)
 			throw SocketException("recv error", errno);
 		else
 		{

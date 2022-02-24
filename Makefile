@@ -6,12 +6,12 @@
 #    By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/08 14:54:30 by kostya            #+#    #+#              #
-#    Updated: 2022/02/23 19:39:03 by tlucanti         ###   ########.fr        #
+#    Updated: 2022/02/23 20:14:14 by tlucanti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ------------------------------ compiler options ------------------------------
-NAME		=	webcore.a
+NAME		=	libwebcore.a
 CXX			=	clang++ -std=c++2a
 CXXFLAGS	=	-Wall -Wextra -Werror -D__DEBUG
 CXXOPTIONS	=	-O2
@@ -113,7 +113,7 @@ ${OBJS_DIR}:
 # ------------------------------------------------------------------------------
 ${DEPS_DIR}:
 	@printf		"$(P)[MK]\t$(Y)${DEPS_DIR}$(S)$(SPACE)\n"
-	mkdir		-p ${DEPS_DIR}
+	@mkdir		-p ${DEPS_DIR}
 
 # ------------------------------------------------------------------------------
 .PHONY:			all clean fclean re

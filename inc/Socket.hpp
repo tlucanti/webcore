@@ -39,7 +39,7 @@ namespace tlucanti
 		explicit Socket(int sock, bool nonblock=true) noexcept;
 		Socket(const Socket &cpy)
 				: _sock(cpy._sock), _address(cpy._address), _port(cpy._port) {}
-		~Socket() noexcept;
+		~Socket() noexcept __DEFAULT
 		Socket &operator =(const Socket &cpy);
 
 		__WUR Socket accept(bool nonblock=true) const;
