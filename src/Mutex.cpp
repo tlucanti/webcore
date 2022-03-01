@@ -13,8 +13,9 @@
 #include "../inc/Mutex.hpp"
 
 tlucanti::Mutex::Mutex() noexcept
-		: _mutex_v_(PTHREAD_MUTEX_INITIALIZER)
-		{}
+{
+	pthread_mutex_init(&_mutex_v_, nullptr);
+}
 
 void
 tlucanti::Mutex::lock() noexcept

@@ -40,7 +40,7 @@ tlucanti::Socket::Socket(int sock, bool nonblock) noexcept
 		: _sock(sock)
 {
 	char ip_str[INET_ADDRSTRLEN];
-	struct sockaddr_storage addr {};
+	struct sockaddr_storage addr = {};
 	socklen_t len = sizeof addr;
 	getpeername(_sock, reinterpret_cast<sockaddr *>(&addr), &len);
 	sockaddr_in *struct_in = reinterpret_cast<sockaddr_in *>(&addr);

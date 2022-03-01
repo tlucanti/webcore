@@ -75,7 +75,7 @@ tlucanti::Server::poll()
 void
 tlucanti::Server::add_client(Socket &new_cli)
 {
-	struct pollfd new_struct {};
+	struct pollfd new_struct = {};
 	new_struct.fd = new_cli.get_sock();
 	new_struct.events = POLLIN;
 	new_struct.revents = 0;

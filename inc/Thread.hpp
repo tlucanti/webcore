@@ -25,7 +25,7 @@ namespace tlucanti
 	{
 	public:
 		Thread(void *(*func)(void *), const void *arg)
-			: pthread_id {}
+				: pthread_id()
 		{
 			int status = pthread_create(&pthread_id, nullptr, func, &arg);
 			if (status)

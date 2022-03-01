@@ -6,15 +6,15 @@
 #    By: tlucanti <tlucanti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/08 14:54:30 by kostya            #+#    #+#              #
-#    Updated: 2022/02/23 20:14:14 by tlucanti         ###   ########.fr        #
+#    Updated: 2022/03/01 17:54:26 by tlucanti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ------------------------------ compiler options ------------------------------
 NAME		=	libwebcore.a
-CXX			=	clang++ -std=c++2a
-CXXFLAGS	=	-Wall -Wextra -Werror -D__DEBUG
-CXXOPTIONS	=	-O2
+CXX			=	clang++ -std=c++98
+CXXFLAGS	=	-Wall -Wextra -Werror
+CXXOPTIONS	=	-O3
 CC			=	CC
 # ------------------------------- linker options -------------------------------
 LIBRARY		=	
@@ -59,7 +59,7 @@ $(NAME):		${OBJS}
 -include ${DEPS}
 
 # ------------------------------------------------------------------------------
-${OBJS_DIR}/%.o: ${SCRS_DIR}/%.cpp 
+${OBJS_DIR}/%.o: ${SCRS_DIR}/%.cpp Makefile
 	@printf		"$(G)[${CC}]$(W)\t\tBuilding CXX object $(Y)$<$(S)$(SPACE)\r"
 	@${CXX}		${CXXFLAGS} ${CXXOPTIONS} -c -MMD -MT $@ -o $@ $< ${INCLUDE}
 	@mv			${@:.o=.d} ${DEPS_DIR}
